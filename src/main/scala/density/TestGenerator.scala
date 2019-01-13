@@ -15,7 +15,7 @@ object TestGenerator extends App {
     val config = new File("")
 
     val gen = new PADGeneratorLauncher
-    gen.main(100, population, diffusion, diffusionsteps, growthrate, alphalocalization, 0, config)
+    gen.main(100, population, diffusion, diffusionsteps, growthrate, alphalocalization, 0, -1)
 
     //("R -e persp(x=1:50,y=1:50,z=as.matrix(read.csv(\"tmp_pop.csv\",sep=\";\",header=FALSE)))")!
     //("R -e source('/Users/Juste/Documents/ComplexSystems/CityNetwork/Models/Morphology/testRMorpho.R')")!

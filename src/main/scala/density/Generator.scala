@@ -8,10 +8,10 @@ trait Generator {
 
   def size: Int
 
-  def world(implicit rng: Random): Seq[Seq[Cell]]
+  def world(implicit rng: Random): World
 
   //def temp_file: String
-  def export_file: File
+  def export_file: File = null
 
   /**
    * computes config and exports it

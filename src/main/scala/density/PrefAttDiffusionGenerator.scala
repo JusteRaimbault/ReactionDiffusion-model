@@ -17,14 +17,34 @@ trait PrefAttDiffusionGenerator extends Generator {
   /** Preferential attachment parameter */
   def alphaAtt: Double
 
+  /** Initial configuration, empty by default **/
+  def initialConfiguration: World = Seq.fill[Cell](size, size) { new Cell(0) }
+
   /**
-   *
+    * Steps at which morphology should be computed - not done if -1
+    * @return
+    */
+  def computeMorphoSteps: Int = -1
+
+  /**
+    * historical trajectories
+    */
+  var worldHistory: Seq[World] = Seq.empty
+
+  var morphoHistory: Seq[Morphology] = Seq.empty
+
+  /**
+   * Compute the final world and fills history
    * @param rng
    * @return
    */
-  def world(implicit rng: Random) = {
-    var arrayVals = Array.fill[Cell](size, size) { new Cell(0) }
+  def world(implicit rng: Random): World = {
+    val initWorld: World=initialConfiguration
+    worldHistory = Seq(initWorld)
+    if (computeMorphoSteps>0){morphoHistory=Seq(Morphology(initWorld))}
+    var arrayVals = initWorld.map(_.toArray).toArray
     var population: Double = 0
+    var t=0
 
     while (population < totalPopulation) {
 
@@ -59,11 +79,15 @@ trait PrefAttDiffusionGenerator extends Generator {
 
       // update total population
       population = arrayVals.flatten.map(_.population).sum
+      t=t+1
+
+      // update history
+      worldHistory = worldHistory++Seq(Seq.tabulate(size, size) { (i: Int, j: Int) => new Cell(arrayVals(i)(j).population) })
+      if(computeMorphoSteps>0&&t%computeMorphoSteps==0){morphoHistory=morphoHistory++Seq(Morphology(arrayVals))}
 
     }
 
-    Seq.tabulate(size, size) { (i: Int, j: Int) => new Cell(arrayVals(i)(j).population) }
-
+    worldHistory.last
   }
 
   /**

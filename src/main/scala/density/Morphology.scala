@@ -5,7 +5,38 @@ import org.apache.commons.math3.util.MathArrays
 
 import scala.math._
 
+case class Morphology(
+                     slope: Double,
+                     slopeRsquared: Double,
+                     distance: Double,
+                     entropy: Double,
+                     moran: Double
+                     )
+
+
 object Morphology {
+
+  /**
+    * Compute morphological indicators
+    * @param world
+    */
+  def apply(world: World): Morphology = {
+    val s = slope(world)
+    Morphology(s._1,s._2,distance(world),entropy(world),moran(world))
+  }
+
+  def apply(mat:Array[Array[Cell]]): Morphology = Morphology(Seq.tabulate(mat.length, mat(0).length) { (i: Int, j: Int) => new Cell(mat(i)(j).population) })
+
+
+  /**
+    * Euclidian distance between two configurations
+    * @param world1
+    * @param world2
+    * @return
+    */
+  def worldDist(world1: World,world2: World): Double = math.sqrt(world1.flatten.zip(world2.flatten).map{case (c1,c2) => (c1.population - c2.population)*(c1.population - c2.population)}.sum)
+
+
 
   /**
    * Rank-size slope
@@ -98,7 +129,7 @@ object Morphology {
    * @param matrix
    * @return
    */
-  def moran(matrix: Seq[Seq[Cell]]): Double = {
+  def moran_classic(matrix: Seq[Seq[Cell]]): Double = {
     def flatCells = matrix.flatten
     val totalPop = flatCells.map(_.population).sum
     val averagePop = totalPop / matrix.flatten.length
@@ -140,7 +171,7 @@ object Morphology {
    * @param matrix
    * @return
    */
-  def moran_convol(matrix: Seq[Seq[Cell]]): Double = {
+  def moran(matrix: Seq[Seq[Cell]]): Double = {
     val conf = matrix.map { row => row.map { _.population }.toArray }.toArray
     val n = conf.length
     val flatConf = conf.flatten
@@ -162,7 +193,7 @@ object Morphology {
    * @param matrix
    * @return
    */
-  def distance_convol(matrix: Seq[Seq[Cell]]): Double = {
+  def distance(matrix: Seq[Seq[Cell]]): Double = {
     val conf = matrix.map { row => row.map { _.population }.toArray }.toArray
     val totPop = conf.flatten.sum
     val dmat = distanceMatrix(2 * conf.length - 1)
