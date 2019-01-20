@@ -56,3 +56,5 @@ class PADGeneratorLauncher {
   }
 
 }
+
+object PADGeneratorLauncher

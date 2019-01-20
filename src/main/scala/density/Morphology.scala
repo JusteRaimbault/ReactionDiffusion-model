@@ -112,14 +112,17 @@ object Morphology {
    */
   def entropy(matrix: Seq[Seq[Cell]]) = {
     val totalQuantity = matrix.flatten.map(_.population).sum
-    assert(totalQuantity > 0)
-    matrix.flatten.map {
-      p =>
-        val quantityRatio = p.population / totalQuantity
-        val localEntropy = if (quantityRatio == 0.0) 0.0 else quantityRatio * math.log(quantityRatio)
-        //assert(!localEntropy.isNaN, s"${quantityRatio} ${math.log(quantityRatio)}")
-        localEntropy
-    }.sum * (-1 / math.log(matrix.flatten.length))
+    //assert(totalQuantity > 0)
+    totalQuantity match {
+      case 0.0 => 1.0
+      case _ => matrix.flatten.map {
+        p =>
+          val quantityRatio = p.population / totalQuantity
+          val localEntropy = if (quantityRatio == 0.0) 0.0 else quantityRatio * math.log(quantityRatio)
+          //assert(!localEntropy.isNaN, s"${quantityRatio} ${math.log(quantityRatio)}")
+          localEntropy
+      }.sum * (-1 / math.log(matrix.flatten.length))
+    }
   }
 
   /**
