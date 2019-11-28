@@ -1,7 +1,8 @@
-package density
+package density.old
+
+import java.io.File
 
 import scala.util.Random
-import java.io.File
 
 object TestGenerator extends App {
 

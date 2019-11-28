@@ -1,7 +1,7 @@
-package density
+package density.old
 
-import org.apache.commons.math3.complex._
-import org.apache.commons.math3.transform._
+import org.apache.commons.math3.complex.Complex
+import org.apache.commons.math3.transform.{DftNormalization, FastFourierTransformer, TransformType}
 import org.apache.commons.math3.util.MathArrays
 
 import scala.util.Random

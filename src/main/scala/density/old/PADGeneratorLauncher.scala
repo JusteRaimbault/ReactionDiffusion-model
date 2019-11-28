@@ -1,6 +1,4 @@
-package density
-
-import java.io.File
+package density.old
 
 import scala.util.Random
 
@@ -14,17 +12,26 @@ class PADGeneratorLauncher {
   var slope: Array[Double] = Array.empty
   var rsquared: Array[Double] = Array.empty
 
-  def main(worldwidth: Int, pop: Double, diff: Double, diffSteps: Double, growth: Double, alpha: Double, replication: Int, morphoTimeStep: Int) = {
+  def main(worldwidth: Int, pop: Double, diff: Double, diffSteps: Double, growth: Double, alpha: Double, replication: Int, morphoTimeStep: Int,
+           initMaxPop:Double = 1.0, initKernelRadius: Double=1.0,initCenterCoords: Array[(Int,Int)]=Array.empty
+          ) = {
 
     println("Params : " + pop + " ; " + diff + " ; " + diffSteps + " ; " + growth + " ; " + alpha + " ; " + replication)
-
-    // replication and diffsteps should be enough in 'small' explorations,
-    // easier to retrieve later (exact int value)
-    //val UIR = replication.toString + diffSteps.toString
 
     var t = System.currentTimeMillis()
 
     implicit val rng = new Random
+
+    val initConf: World = initCenterCoords.size match{
+      case 0 => Seq.fill[Cell](worldwidth, worldwidth) { new Cell(0) }
+      case _ => new ExpMixtureGenerator {
+        override def maxPopulation: Double = initMaxPop
+        override def kernelRadius: Double = initKernelRadius
+        override def centersNumber: Int = 0
+        override def size: Int = worldwidth
+        override def centersCoords:Seq[(Int,Int)] = initCenterCoords
+      }.world
+    }
 
     val gen = new PrefAttDiffusionGenerator {
       override def size: Int = worldwidth
@@ -33,9 +40,8 @@ class PADGeneratorLauncher {
       override def diffusionSteps: Int = diffSteps.toInt
       override def growthRate: Double = growth
       override def alphaAtt: Double = alpha
-      //override def temp_file: String = "tmp/pop_" + UIR + ".csv"
-      //override def export_file: File = f
       override def computeMorphoSteps: Int = morphoTimeStep
+      override def initialConfiguration: World = initConf
     }
 
     // compute

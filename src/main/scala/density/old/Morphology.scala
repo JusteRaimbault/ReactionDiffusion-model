@@ -1,4 +1,4 @@
-package density
+package density.old
 
 import org.apache.commons.math3.stat.regression.SimpleRegression
 import org.apache.commons.math3.util.MathArrays

@@ -1,6 +1,6 @@
-package density
+package density.old
 
-import java.io.{ File, FileWriter }
+import java.io.{File, FileWriter}
 
 import scala.util.Random
 
