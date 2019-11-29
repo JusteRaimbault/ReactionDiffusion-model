@@ -1,4 +1,4 @@
-package density
+package density.old
 
 class Cell(pop: Double) {
 

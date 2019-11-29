@@ -14,4 +14,5 @@ OsgiKeys.privatePackage := Seq("!scala.*,*")
 
 OsgiKeys.requireCapability := """osgi.ee;filter:="(&(osgi.ee=JavaSE)(version=1.8))""""
 
-libraryDependencies += "org.apache.commons" % "commons-math3" % "3.5"
+libraryDependencies += "org.apache.commons" % "commons-math3" % "3.6.1"
+libraryDependencies += "com.github.tototoshi" %% "scala-csv" % "1.3.4"

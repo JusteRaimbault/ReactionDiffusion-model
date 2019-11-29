@@ -1,11 +1,11 @@
-package density
+package density.old
 
 import scala.util.Random
 
 trait ExpMixtureGenerator extends Generator {
 
   /** maximal capacity C_m */
-  def maxPopulation: Int
+  def maxPopulation: Double
 
   /** Size of exponential kernels, of the form C_m*exp(-||x-x_0||/r_0) */
   def kernelRadius: Double
@@ -13,15 +13,20 @@ trait ExpMixtureGenerator extends Generator {
   /** Number of exponential kernels */
   def centersNumber: Int
 
+  /** Fixed coordinates for centers **/
+  def centersCoords:Seq[(Int,Int)] = Seq.empty
+
   def world(implicit rng: Random): Seq[Seq[Cell]] = {
     val arrayVals = Array.fill[Cell](size, size) {
       new Cell(0)
     }
 
     // generate random center positions
-    val centers = Array.fill[Int](centersNumber, 2) {
-      rng.nextInt(size)
+    val centers: Array[Array[Int]] = centersCoords.size match {
+      case n if n == 0 => Array.fill[Int](centersNumber, 2) {rng.nextInt(size)}
+      case _ => centersCoords.map{case c => Array(c._1,c._2)}.toArray
     }
+
 
     for (i <- 0 to size - 1; j <- 0 to size - 1) {
       for (c <- 0 to centersNumber - 1) {
