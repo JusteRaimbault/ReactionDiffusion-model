@@ -1,7 +1,5 @@
 package density.reactiondiffusion
 
-package org.openmole.spatialdata.utils.math
-
 import org.apache.commons.math3.complex.Complex
 import org.apache.commons.math3.transform.{DftNormalization, FastFourierTransformer, TransformType}
 import org.apache.commons.math3.util.MathArrays

@@ -23,5 +23,14 @@ package object reactiondiffusion {
 
   }
 
+  def withTimer[A,B](fun: A => B)(a: A): (B,Double) = {
+    val start = System.currentTimeMillis()
+    val res = fun(a)
+    (res,System.currentTimeMillis()-start)
+  }
+
+  def relSquare(x: Double,y: Double): Double = scala.math.pow(2*(x - y)/(x+y) ,2)
+
+
 
 }

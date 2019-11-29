@@ -1,6 +1,6 @@
-package density.old
+package density
 
-package object density {
+package object old {
 
   type World = Seq[Seq[Cell]]
 

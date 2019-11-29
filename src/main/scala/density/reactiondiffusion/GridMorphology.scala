@@ -2,7 +2,6 @@ package density.reactiondiffusion
 
 import org.apache.commons.math3.linear.MatrixUtils
 import org.apache.commons.math3.util.MathArrays
-import org.openmole.spatialdata.utils.math._
 
 import scala.util.Random
 
@@ -122,17 +121,19 @@ object GridMorphology {
     * @param cachedNetwork
     * @return
     */
+  /*
   def components(world: Array[Array[Double]],cachedNetwork: Option[Network] = None): Double = {
     val nw = cachedNetwork match {case None => network.gridToNetwork(world);case n => n.get}
     val components = GraphAlgorithms.connectedComponents(nw)
     components.size
-  }
+  }*/
 
   /**
     * average block area
     * @param world
     * @return
     */
+  /*
   def avgBlockArea(world: Array[Array[Double]],cachedNetwork: Option[Network] = None): Double = {
     //val inversedNetwork = Network.gridToNetwork(world.map{_.map{case x => 1.0 - x}})
     val nw = cachedNetwork match {case None => network.gridToNetwork(world);case n => n.get}
@@ -140,7 +141,7 @@ object GridMorphology {
     val avgblockarea = components.size match {case n if n == 0 => 0.0;case n => components.map{_.nodes.size}.sum/components.size}
     //println("avgblockarea = "+avgblockarea)
     avgblockarea
-  }
+  }*/
 
   /**
     * avg component area
@@ -148,12 +149,13 @@ object GridMorphology {
     * @return
     */
   def avgComponentArea(world: Array[Array[Double]]): Double = {
-    val inversedNetwork = network.gridToNetwork(world.map{_.map{case x => 1.0 - x}})
+    /*val inversedNetwork = network.gridToNetwork(world.map{_.map{case x => 1.0 - x}})
     val components = GraphAlgorithms.connectedComponents(inversedNetwork)
     //println("avgblockarea = "+avgblockarea)
     if(components.size > 0){
       components.map{_.nodes.size}.sum/components.size
-    }else 0.0
+    }else 0.0*/
+    0.0
   }
 
 
@@ -164,6 +166,7 @@ object GridMorphology {
     * @param sampledPoints
     * @return
     */
+  /*
   def avgDetour(world: Array[Array[Double]],cachedNetwork: Option[Network] = None,sampledPoints: Int=50)(implicit rng: Random): Double = {
     if(world.flatten.sum==world.map{_.length}.sum){return(0.0)}
     val nw = cachedNetwork match {case None => network.gridToNetwork(world);case n => n.get}
@@ -183,7 +186,7 @@ object GridMorphology {
         d/de
     }.filter{!_.isNaN}.filter{!_.isInfinite}.sum / paths.size
     avgdetour
-  }
+  }*/
 
 
 
